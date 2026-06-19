@@ -1,0 +1,127 @@
+ 构建APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 设置Java环境
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: 整理项目结构
+        run: |
+          # 创建目录结构
+          mkdir -p app/src/main/java/com/hundunhai/setting
+          mkdir -p app/src/main/assets
+          mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/values-en
+          mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/menu
+          mkdir -p app/src/main/res/drawable
+          mkdir -p app/src/main/res/color
+          mkdir -p app/src/main/res/xml
+          mkdir -p app/src/main/res/mipmap-anydpi-v26
+          mkdir -p gradle/wrapper
+
+          # 移动根目录配置文件
+          [ -f build.gradle ] && mv build.gradle app/build.gradle || true
+          [ -f settings.gradle ] && mv settings.gradle . || true
+          [ -f gradle.properties ] && mv gradle.properties . || true
+          [ -f proguard-rules.pro ] && mv proguard-rules.pro app/ || true
+          [ -f gradle-wrapper.properties ] && mv gradle-wrapper.properties gradle/wrapper/ || true
+
+          # 移动AndroidManifest
+          [ -f AndroidManifest.xml ] && mv AndroidManifest.xml app/src/main/ || true
+
+          # 移动Java文件
+          [ -f MainActivity.java ] && mv MainActivity.java app/src/main/java/com/hundunhai/setting/ || true
+          [ -f SettingsActivity.java ] && mv SettingsActivity.java app/src/main/java/com/hundunhai/setting/ || true
+          [ -f ContentManagerActivity.java ] && mv ContentManagerActivity.java app/src/main/java/com/hundunhai/setting/ || true
+
+          # 移动HTML文件
+          [ -f index.html ] && mv index.html app/src/main/assets/ || true
+
+          # 移动资源文件
+          [ -f strings.xml ] && mv strings.xml app/src/main/res/values/ || true
+          [ -f colors.xml ] && mv colors.xml app/src/main/res/values/ || true
+          [ -f themes.xml ] && mv themes.xml app/src/main/res/values/ || true
+          [ -f network_security_config.xml ] && mv network_security_config.xml app/src/main/res/xml/ || true
+
+          # 移动图标和drawable
+          [ -f ic_home.xml ] && mv ic_home.xml app/src/main/res/drawable/ || true
+          [ -f ic_toc.xml ] && mv ic_toc.xml app/src/main/res/drawable/ || true
+          [ -f ic_search.xml ] && mv ic_search.xml app/src/main/res/drawable/ || true
+          [ -f ic_settings.xml ] && mv ic_settings.xml app/src/main/res/drawable/ || true
+          [ -f ic_launcher_foreground.xml ] && mv ic_launcher_foreground.xml app/src/main/res/drawable/ || true
+          [ -f ic_launcher.xml ] && mv ic_launcher.xml app/src/main/res/mipmap-anydpi-v26/ || true
+          [ -f ic_launcher_round.xml ] && mv ic_launcher_round.xml app/src/main/res/mipmap-anydpi-v26/ || true
+
+          # 移动颜色状态列表
+          [ -f bottom_nav_color.xml ] && mv bottom_nav_color.xml app/src/main/res/color/ || true
+
+          # 创建根目录build.gradle
+          cat > build.gradle << 'EOF'
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:7.2.0'
+              }
+          }
+          allprojects {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          EOF
+
+          # 创建settings.gradle
+          cat > settings.gradle << 'EOF'
+          include ':app'
+          rootProject.name = "HundunhaiApp"
+          EOF
+
+          # 创建gradle.properties
+          cat > gradle.properties << 'EOF'
+          org.gradle.jvmargs=-Xmx2048m
+          android.useAndroidX=true
+          android.enableJetifier=true
+          EOF
+
+          # 创建gradle wrapper
+          cat > gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionBase=GRADLE_USER_HOME
+          distributionPath=wrapper/dists
+          distributionUrl=https\://services.gradle.org/distributions/gradle-7.4-bin.zip
+          zipStoreBase=GRADLE_USER_HOME
+          zipStorePath=wrapper/dists
+          EOF
+
+          # 显示最终结构
+          echo "项目结构："
+          find . -type f | head -50
+
+      - name: 构建Debug APK
+        run: |
+          chmod +x gradlew 2>/dev/null || true
+          gradle wrapper --gradle-version 7.4
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: 上传APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
