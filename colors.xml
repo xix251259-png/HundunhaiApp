@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 默认朱红主题 -->
+    <color name="primary">#961212</color>
+    <color name="primary_dark">#7a0e0e</color>
+    <color name="primary_light">#b01818</color>
+    <color name="gold">#d4b888</color>
+    <color name="gold_dark">#b89464</color>
+    <color name="bg_color">#f6efe0</color>
+    <color name="bg_secondary">#fffbf0</color>
+    <color name="text_color">#1a1a1a</color>
+    <color name="text_secondary">#5a4a3a</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    
+    <!-- 夜间模式 -->
+    <color name="dark_bg">#1a1510</color>
+    <color name="dark_bg_secondary">#2a2218</color>
+    <color name="dark_text">#e8dcc8</color>
+    <color name="dark_text_secondary">#a89878</color>
+    
+    <!-- 蓝色主题 -->
+    <color name="blue_primary">#1565c0</color>
+    <color name="blue_primary_dark">#0d47a1</color>
+    <color name="blue_accent">#42a5f5</color>
+    
+    <!-- 绿色主题 -->
+    <color name="green_primary">#2e7d32</color>
+    <color name="green_primary_dark">#1b5e20</color>
+    <color name="green_accent">#66bb6a</color>
+    
+    <!-- 金色主题 -->
+    <color name="gold_primary">#f57f17</color>
+    <color name="gold_primary_dark">#e65100</color>
+    <color name="gold_accent">#ffb74d</color>
+</resources>

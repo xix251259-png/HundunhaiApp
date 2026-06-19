@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 背景圆形 -->
+    <path
+        android:fillColor="#961212"
+        android:pathData="M54,54m-48,0a48,48 0,1 1,96 0a48,48 0,1 1,-96 0" />
+
+    <!-- 内部装饰圆环 -->
+    <path
+        android:fillColor="#d4b888"
+        android:pathData="M54,54m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0" />
+
+    <!-- 内部背景 -->
+    <path
+        android:fillColor="#f6efe0"
+        android:pathData="M54,54m-36,0a36,36 0,1 1,72 0a36,36 0,1 1,-72 0" />
+
+    <!-- "道"字的简化图案 -->
+    <path
+        android:fillColor="#961212"
+        android:pathData="M42,30h24v6h-24v-6zM42,42h24v6h-24v-6zM42,54h24v6h-24v-6zM48,66h12v12h-12v-12z" />
+
+    <!-- 底部装饰 -->
+    <path
+        android:fillColor="#b89464"
+        android:pathData="M36,78h36v4h-36v-4z" />
+</vector>
